@@ -1,0 +1,26 @@
+# Onboarding Guide
+
+============================
+Section 1: Welcome and First Steps
+============================
+Welcome to the team! We are thrilled to have you onboard. Your first few days are designed to be low-pressure, focusing on integration and setup rather than immediate deliverables. Your primary point of contact will be your "Onboarding Buddy," a peer who will help you navigate the social and technical landscape of the company. Start by exploring the internal Wiki and introducing yourself in the `#general` Slack channel. Take your time to absorb the culture and ask as many questions as possible.
+
+============================
+Section 2: Hardware and Software Setup
+============================
+On Day 1, you will receive your company-issued laptop. Follow the "Setup Script" located in the `onboarding-repo` to install the necessary tools (Docker, VS Code, Git, Node.js, Python). Ensure you have configured your SSH keys for GitHub and accessed the internal VPN. If you encounter any permissions issues, open a ticket with the IT Helpdesk via the portal. Your email and Slack accounts are already provisioned; please set up your MFA immediately for security compliance.
+
+============================
+Section 3: Understanding the Product Ecosystem
+============================
+To be effective, you need to understand how our products fit together. Spend your second week reviewing the product architecture diagrams in the Knowledge Base. We recommend signing up for a trial account of our flagship product, AI-Scribe, and trying to complete the "User Journey" checklist provided in this guide. Schedule a 30-minute demo with a Product Manager to understand the current roadmap and the primary pain points our customers are facing.
+
+============================
+Section 4: Meeting the Team and Stakeholders
+============================
+Integration is about people. Within your first 10 days, you are expected to have 1:1 "coffee chats" (virtual or in-person) with every member of your immediate team and at least two people from adjacent teams (e.g., if you are in Engineering, meet someone in Product and QA). These meetings are not for status updates but for understanding roles, responsibilities, and how you will collaborate. Use these sessions to learn the "unwritten rules" of how the team communicates.
+
+============================
+Section 5: Your First Contribution (The "Quick Win")
+============================
+We believe in learning by doing. By the end of your second week, you will be assigned a "Quick Win" task. This is a small, low-risk ticket (e.g., a documentation update, a small UI bug fix, or adding a unit test) designed to walk you through the entire development lifecycle: branching, coding, testing, reviewing, and deploying. Your buddy will guide you through the process, but the goal is for you to push your first piece of code to production to build confidence.

@@ -1,0 +1,15 @@
+# Environment
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data & Vector Store
+chroma_db/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db

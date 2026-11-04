@@ -1,0 +1,26 @@
+# Engineering Standards
+
+============================
+Section 1: Coding Style and Linting
+============================
+Consistency is paramount for maintainability. We follow the PEP 8 style guide for Python and the Airbnb style guide for JavaScript/TypeScript. All projects must include a `.prettierrc` and `.eslintrc` file to enforce these standards automatically. Code that fails linting checks will be automatically rejected by the CI pipeline. We emphasize readability over cleverness; if a piece of code requires a paragraph of comments to explain "how" it works, it should be refactored for clarity.
+
+============================
+Section 2: Version Control and Branching Strategy
+============================
+We utilize a modified GitFlow workflow. The `main` branch represents production-ready code and is protected. All features must be developed in `feature/` branches, and bug fixes in `fix/` branches. Merge requests (MRs) must target the `develop` branch first. A merge to `main` only occurs during scheduled release cycles. Commit messages must follow the Conventional Commits specification (e.g., `feat: add user authentication` or `fix: resolve memory leak in parser`).
+
+============================
+Section 3: Testing Frameworks and Requirements
+============================
+Testing is not optional. Every pull request must include corresponding unit tests. For Python, we use `pytest`; for JavaScript, we use `Jest`. We target a minimum of 80% line coverage for business logic, although critical paths (like payment processing) require 100% coverage. Integration tests must be run against a staging environment that mirrors production. We encourage the use of Test-Driven Development (TDD) to define the behavior of a feature before the implementation begins.
+
+============================
+Section 4: API Design and Documentation
+============================
+All internal and external APIs must follow RESTful principles. Resource naming should be noun-based and plural (e.g., `/users` instead of `/getUser`). Versioning is mandatory (e.g., `/api/v1/...`) to prevent breaking changes for consumers. Documentation must be auto-generated using Swagger/OpenAPI 3.0. Every endpoint must have a clearly defined request schema, response schema, and a list of possible error codes with descriptions.
+
+============================
+Section 5: Deployment and Infrastructure
+============================
+We follow an Infrastructure-as-Code (IaC) philosophy using Terraform. No manual changes to the cloud environment are permitted. Deployments are handled via a CI/CD pipeline (GitHub Actions) that includes stages for linting, testing, security scanning, and canary deployment. We use Kubernetes for orchestration, ensuring that all services are stateless and horizontally scalable. Monitoring is implemented via Prometheus and Grafana, with alerts configured for 5xx error spikes and high latency.

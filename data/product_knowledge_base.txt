@@ -1,0 +1,34 @@
+# Product Knowledge Base
+
+============================
+Section 1: Product Vision and Value Proposition
+============================
+AI-Scribe is designed to solve the "meeting fatigue" epidemic. In a world of endless virtual calls, valuable insights are often lost in hour-long recordings. AI-Scribe transforms these recordings into actionable intelligence. Our core value proposition is the reduction of manual note-taking and the elimination of ambiguity in meeting outcomes. By providing a "single source of truth" for every conversation, we enable teams to spend more time executing and less time recalling what was decided.
+
+============================
+Section 2: Technical Architecture and Integration
+============================
+The system utilizes a pipeline of state-of-the-art AI models. First, a high-fidelity speech-to-text engine converts audio to timestamps and text. Then, a Large Language Model (LLM) processes the transcript to identify speakers, extract key themes, and generate summaries. AI-Scribe integrates via OAuth2 with Zoom, Microsoft Teams, and Google Meet, allowing it to join calls as a silent bot. Data is streamed in real-time via WebSockets to provide live captions for accessibility.
+
+============================
+Section 3: Feature Deep Dive - Action Item Extraction
+============================
+One of our most powerful features is the "Automated Action Item" extractor. Using semantic analysis, AI-Scribe identifies commitments made during a call (e.g., "I will send the report by Friday"). These are automatically converted into a task list with assigned owners and deadlines. Users can then export these tasks directly into project management tools like Jira, Asana, or Trello via our API. This feature reduces the "post-meeting lag" and ensures accountability across the organization.
+
+============================
+Section 4: User Personas and Use Cases
+============================
+AI-Scribe serves three primary personas:
+1. The Executive: Needs high-level summaries of multiple meetings to stay informed without attending every call.
+2. The Project Manager: Uses the tool to track deliverables, deadlines, and decision logs across various workstreams.
+3. The Engineer: Relies on the precise transcription to review technical requirements and avoid misunderstandings in specifications.
+Common use cases include quarterly business reviews, daily stand-ups, and client discovery calls.
+
+============================
+Section 5: Pricing Tiers and Service Level Agreements (SLA)
+============================
+We offer three tiers of service:
+- Basic: Free for individuals, limited to 5 hours of transcription per month, basic summaries.
+- Professional: $20/user/month, unlimited transcription, action item extraction, and 30-day storage.
+- Enterprise: Custom pricing, dedicated support, SSO integration, custom LLM fine-tuning, and a 99.9% uptime SLA.
+Enterprise customers also receive a dedicated account manager and quarterly optimization reviews to ensure they are getting the most value from the tool.

@@ -1,0 +1,26 @@
+# Security Policies
+
+============================
+Section 1: Access Control and Identity Management
+============================
+We follow the Principle of Least Privilege (PoLP). Users are granted the minimum level of access necessary to perform their job functions. Access to production environments is restricted to the SRE team and requires a justified ticket and a temporary "break-glass" credential. All identities are managed through a centralized Identity Provider (IdP) with mandatory Multi-Factor Authentication (MFA) using hardware keys (YubiKeys) or authenticator apps. Periodic access reviews are conducted every 90 days to prune unnecessary permissions.
+
+============================
+Section 2: Data Encryption and Privacy
+============================
+Data protection is a non-negotiable requirement. All data must be encrypted "at rest" using AES-256 and "in transit" using TLS 1.3. We prohibit the use of deprecated protocols like SSL or TLS 1.0. For highly sensitive customer data, we employ field-level encryption, ensuring that even database administrators cannot read PII (Personally Identifiable Information) without the decryption key. Our privacy policy adheres to GDPR and CCPA standards, providing users with the right to be forgotten and the right to data portability.
+
+============================
+Section 3: Endpoint Security and Device Management
+============================
+All devices accessing company resources must be enrolled in our Mobile Device Management (MDM) system. Mandatory security baselines include full-disk encryption (FileVault/BitLocker), an active firewall, and an up-to-date antivirus solution. The MDM system automatically pushes critical security patches; if a device is more than 7 days out of date, its access to the corporate network is automatically revoked. USB ports are disabled for data transfer on all production-related machines to prevent data exfiltration.
+
+============================
+Section 4: Network Security and Perimeter Defense
+============================
+Our network is segmented into zones (DMZ, Internal, Secure) to contain potential breaches. We use a Zero Trust architecture, meaning no device is trusted by default, regardless of its location. All incoming traffic passes through a Web Application Firewall (WAF) and a DDoS protection layer. Internal services communicate via a Service Mesh (Istio) with mutual TLS (mTLS) enabled, ensuring that every service-to-service call is authenticated and encrypted. Regular penetration tests are conducted by external third-party firms.
+
+============================
+Section 5: Incident Response and Disaster Recovery
+============================
+In the event of a security breach, the Incident Response Plan (IRP) is activated. The first priority is containment (e.g., isolating the affected server), followed by eradication and recovery. All incidents are categorized by severity (P0 to P3). P0 incidents require a "War Room" to be established within 15 minutes. We maintain geographically redundant backups of all critical data, tested monthly via recovery drills. Our Recovery Time Objective (RTO) for critical services is 4 hours, and our Recovery Point Objective (RPO) is 15 minutes.
