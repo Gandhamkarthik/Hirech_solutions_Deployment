@@ -141,70 +141,91 @@ def rag_agent(question):
 # 3. Streamlit UI
 st.set_page_config(page_title="Hirec Solutions AI", layout="centered", page_icon="🏢")
 
-# --- PROFESSIONAL UI CUSTOMIZATION ---
+# --- DARK MODE / HIGH CONTRAST THEME ---
 st.markdown("""
     <style>
-    /* Main Background */
+    /* Main App Background - Deep Grey/Dark */
     .stApp {
-        background-color: #FFFFFF;
+        background-color: #121212 !important;
+        color: #FFFFFF !important;
     }
 
-    /* Fix for white text/visibility issues in chat */
+    /* Force all text to be white/light grey for maximum contrast */
+    .stMarkdown p, .stMarkdown li, .stMarkdown span, .stMarkdown div {
+        color: #E0E0E0 !important;
+    }
+
+    /* Chat Message Bubbles */
     .stChatMessage {
-        background-color: #F0F2F6 !important;
+        background-color: #1E1E1E !important;
+        border: 1px solid #333333 !important;
         border-radius: 15px !important;
-        color: #1F293T !important;
-        border: 1px solid #E0E0E0 !important;
+        color: #FFFFFF !important;
     }
 
-    /* Assistant message specific color */
+    /* Distinguish User and Assistant bubbles */
+    [data-testid="stChatMessage"]:nth-child(odd) {
+        background-color: #2A2A2A !important;
+        border-left: 5px solid #4A90E2 !important;
+    }
+
     [data-testid="stChatMessage"]:nth-child(even) {
-        background-color: #E8F0FE !important;
-    }
-
-    /* Force text to be dark for visibility */
-    .stMarkdown p, .stMarkdown li, .stMarkdown span {
-        color: #1F293T !important;
+        background-color: #1E1E1E !important;
+        border-left: 5px solid #50C878 !important;
     }
 
     /* Header Styling */
     .main-title {
         font-size: 42px !important;
         font-weight: 700 !important;
-        color: #1E3A8A !important;
+        color: #FFFFFF !important;
         text-align: center !important;
         margin-bottom: 10px !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     .sub-title {
         font-size: 18px !important;
-        color: #6B7280 !important;
+        color: #B0B0B0 !important;
         text-align: center !important;
         margin-bottom: 30px !important;
     }
 
     /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background-color: #F8FAFC !important;
+        background-color: #181818 !important;
+        border-right: 1px solid #333333 !important;
+    }
+
+    /* Sidebar Text */
+    [data-testid="stSidebar"] .stMarkdown p {
+        color: #CCCCCC !important;
     }
 
     /* Button Styling */
     .stButton>button {
+        background-color: #333333 !important;
+        color: white !important;
+        border: 1px solid #444444 !important;
         border-radius: 8px !important;
-        font-weight: 600 !important;
         transition: all 0.3s ease !important;
     }
     .stButton>button:hover {
-        border-color: #1E3A8A !important;
-        color: #1E3A8A !important;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        background-color: #4A90E2 !important;
+        border-color: #4A90E2 !important;
+        color: white !important;
+    }
+
+    /* Input box styling */
+    .stChatInputContainer {
+        background-color: #121212 !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # Page Header
 st.markdown('<p class="main-title">🏢 Hirec Solutions AI</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Enterprise Knowledge Assistant • Powered by RAG</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-title">Enterprise Knowledge Assistant • Dark Edition</p>', unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -228,7 +249,7 @@ with st.sidebar:
         st.rerun()
 
     st.markdown("---")
-    st.info("This AI helps you find company policies instantly using internal data.")
+    st.markdown("💡 **Tip**: If you don't see answers, click 'Sync Knowledge Base' first.")
 
 # Display chat history
 for message in st.session_state.messages:
