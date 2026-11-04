@@ -19,12 +19,10 @@ client_groq = OpenAI(
 )
 
 # Initialize ChromaDB
-# Use PersistentClient to ensure data stays on disk between app restarts
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
-# Use get_or_create to avoid "Collection already exists" error
 collection = chroma_client.get_or_create_collection(name="company_docs")
 
-# 2. Helper Functions (from Notebook)
+# 2. Helper Functions
 def chunk_document(text, source_name):
     raw_sections = text.split("============================")
     chunks = []
@@ -60,14 +58,9 @@ def ingest_docs():
     ids = [f"chunk_{i}" for i in range(len(all_chunks))]
     metadatas = [{"source": c["source"]} for c in all_chunks]
 
-    # Clear existing to avoid duplicates if re-ingesting
     try:
-        # ChromaDB doesn't have a simple 'clear', we recreate or update
-        # For simplicity in a demo app, we just add.
-        # In production, you'd manage IDs carefully.
         collection.add(documents=documents, ids=ids, metadatas=metadatas)
     except Exception as e:
-        # If IDs already exist, we might need to handle it
         st.error(f"Ingestion error: {e}")
         return 0
 
@@ -81,7 +74,6 @@ def search_docs(query: str) -> str:
     chunks = results['documents'][0]
     return "\n\n".join(chunks)
 
-# Tool definition for the Agent
 rag_tools = [
     {
         "type": "function",
@@ -147,69 +139,118 @@ def rag_agent(question):
     return "Could not answer within step limit.", logs
 
 # 3. Streamlit UI
-st.set_page_config(page_title="Hirec Solutions AI", layout="wide", page_icon="🏢")
+st.set_page_config(page_title="Hirec Solutions AI", layout="centered", page_icon="🏢")
 
-# Custom CSS for a better look
+# --- PROFESSIONAL UI CUSTOMIZATION ---
 st.markdown("""
     <style>
-    .main {
-        background-color: #f5f7f9;
+    /* Main Background */
+    .stApp {
+        background-color: #FFFFFF;
     }
+
+    /* Fix for white text/visibility issues in chat */
     .stChatMessage {
-        border-radius: 15px;
-        padding: 10px;
-        margin-bottom: 10px;
+        background-color: #F0F2F6 !important;
+        border-radius: 15px !important;
+        color: #1F293T !important;
+        border: 1px solid #E0E0E0 !important;
+    }
+
+    /* Assistant message specific color */
+    [data-testid="stChatMessage"]:nth-child(even) {
+        background-color: #E8F0FE !important;
+    }
+
+    /* Force text to be dark for visibility */
+    .stMarkdown p, .stMarkdown li, .stMarkdown span {
+        color: #1F293T !important;
+    }
+
+    /* Header Styling */
+    .main-title {
+        font-size: 42px !important;
+        font-weight: 700 !important;
+        color: #1E3A8A !important;
+        text-align: center !important;
+        margin-bottom: 10px !important;
+    }
+
+    .sub-title {
+        font-size: 18px !important;
+        color: #6B7280 !important;
+        text-align: center !important;
+        margin-bottom: 30px !important;
+    }
+
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background-color: #F8FAFC !important;
+    }
+
+    /* Button Styling */
+    .stButton>button {
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+    .stButton>button:hover {
+        border-color: #1E3A8A !important;
+        color: #1E3A8A !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("🏢 Hirec Solutions AI Assistant")
-st.markdown("Welcome to the internal company knowledge base. Ask me anything about HR, Engineering, or Security policies!")
+# Page Header
+st.markdown('<p class="main-title">🏢 Hirec Solutions AI</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-title">Enterprise Knowledge Assistant • Powered by RAG</p>', unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 with st.sidebar:
-    st.header("⚙️ System Control")
+    st.markdown("### ⚙️ System Control")
 
     if st.button("🔄 Sync Knowledge Base", use_container_width=True):
         with st.spinner("Indexing documents..."):
             count = ingest_docs()
             if count > 0:
-                st.success(f"✅ Successfully indexed {count} chunks!")
+                st.success(f"✅ Indexed {count} chunks!")
             else:
-                st.error("❌ Failed to index documents. Check if 'data/' folder exists.")
+                st.error("❌ Indexing failed.")
 
     st.divider()
-    show_logs = st.checkbox("🔍 Show Agent Thought Process", value=True)
+    show_logs = st.checkbox("🔍 Show Agent Thoughts", value=False)
 
-    if st.button("🗑️ Clear Chat", use_container_width=True):
+    if st.button("🗑️ Clear Conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
+
+    st.markdown("---")
+    st.info("This AI helps you find company policies instantly using internal data.")
 
 # Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
         if "logs" in message and show_logs and message["role"] == "assistant":
-            with st.expander("Agent Logs"):
+            with st.expander("View Step-by-Step Search"):
                 for log in message["logs"]:
                     st.write(log)
 
 # Chat input
 if prompt := st.chat_input("Ask about company policies..."):
-    # User message
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Assistant response
     with st.chat_message("assistant"):
         with st.spinner("Searching internal docs..."):
             answer, logs = rag_agent(prompt)
             st.markdown(answer)
             if show_logs:
-                with st.expander("Agent Logs"):
+                with st.expander("View Step-by-Step Search"):
                     for log in logs:
                         st.write(log)
 
